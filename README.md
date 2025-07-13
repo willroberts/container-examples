@@ -29,3 +29,28 @@ wget https://github.com/docker/compose/releases/download/v2.38.1/docker-compose-
   -O ~/.docker/cli-plugins/docker-compose
 podman compose up
 ```
+
+## With Quadlet
+
+Quadlet runs Podman containers as systemd units.
+
+Create a container unit:
+```
+mkdir -p ~/.config/containers/systemd
+cat <<EOF
+[Container]
+ContainerName=nginx
+Environment=FOO=Bar
+Image=docker.io/nginxinc/nginx-unprivileged
+AutoUpdate=registry
+PublishPort=8080:8080
+Volume=/path/to/data:/data:z
+
+[Install]
+WantedBy=default.target # Automatically start on boot.
+EOF > ~/.config/containers/systemd/nginx.container
+
+systemctl --user daemon-reload
+systemctl --user start nginx
+curl -I http://localhost:8080
+```
