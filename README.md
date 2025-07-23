@@ -1,7 +1,7 @@
 # Container Examples
 
-This repo contains examples of running OCI container images with various tools, including
-`podman`, `quadlet`, `containerd`, and `runc`.
+This repo contains examples of running OCI container images with various tools,
+including `podman`, `toolbx`, `quadlet`, and `runc`.
 
 ## With `runc`
 ```bash
@@ -9,15 +9,6 @@ mkdir rootfs
 podman export $(podman create busybox) | tar -C rootfs -xvf -
 runc spec --rootless
 runc run busybox
-```
-
-## With `containerd` (using `runc` internally)
-Supports image and storage management on top of `runc`.
-```bash
-# requires containerd to be running
-# raises several socket permissions errors, only works as root
-ctr images pull docker.io/library/busybox:latest
-ctr run docker.io/library/busybox:latest busybox
 ```
 
 ## With `podman` (using `runc` internally)
